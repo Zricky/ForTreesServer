@@ -2,6 +2,10 @@
 #  @author       :  zhaojx
 #  @date         :  2018/8/15 9:59
 #  @description  :  日志封装类
+#  @version      :  V_1.0
+#  {\____/}
+# ( • . • )
+# /    >🐍 人生苦短，我用python
 import logging
 from . import *
 log_level_dict = {
@@ -24,8 +28,11 @@ class Logger(object):
         console.setFormatter(formatter)
         self.logger.addHandler(console)
         if (IS_WRITE_LOG_TO_FILE):
+            mode='a'
+            if(IS_REWRITE_FILE):
+                mode='w'
             log_name = '{path}{name}-log.log'.format(path=LOG_PATH, name=LOGNAME)
-            handler = logging.FileHandler(log_name, encoding='utf-8')
+            handler = logging.FileHandler(log_name, encoding='utf-8',mode=mode)
             handler.setLevel(log_level_dict[LOG_LEAVEL])
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)

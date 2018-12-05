@@ -2,6 +2,10 @@
 #  @author       :  zhaojx
 #  @date         :  2018/12/3 14:21
 #  @description  :  守护
+#  @version      :  V_1.0
+#  {\____/}
+# ( • . • )
+# /    >🐍 人生苦短，我用python
 # from flask_sqlalchemy import SQLAlchemy
 # import time
 # import os
@@ -10,7 +14,7 @@
 from . import *
 
 
-class Table():
+class Table:
     def to_json(self):
         from datetime import datetime
         dict = self.__dict__
@@ -40,25 +44,21 @@ class BatchTask(Base, Table):
 
 class WorkOrderAssign(Base, Table):
     __tablename__ = 'tf_b_work_order_assign'
-    APPLY_NO = Column(String, primary_key=True, nullable=False)
-    WORK_ORDER_NO = Column(String)
-    ACCEPT_PROVINCE_CODE = Column(String)
-    ACCEPT_EPARCHY_CODE = Column(String)
-    ACCEPT_EPARCHY_CODE = Column(String)
-    ACCEPT_CITY_CODE = Column(String)
-    WORK_MODE = Column(CHAR(1))
-    STEP_ID = Column(String)
-    STATE = Column(CHAR(3))
-    STATE_DATE = Column(DateTime)
-    CREATE_DATE = Column(DateTime)
-    DEAL_SYS = Column(CHAR(3))
-    DEAL_MSG = Column(String)
-    REPEAT_CNT = Column(BIGINT(10))
-    REMARK = Column(String)
-    PRI = Column(CHAR(3))
-
-    def __repr__(self):
-        return 'WorkOrderAssign%r[%r]' % (self.REMARK, self.APPLY_NO)
+    apply_no = Column(String, primary_key=True, nullable=True)
+    work_order_no = Column(String, primary_key=False, nullable=False)
+    accept_province_code = Column(String, primary_key=False, nullable=False)
+    accept_eparchy_code = Column(String, primary_key=False, nullable=False)
+    accept_city_code = Column(String, primary_key=False, nullable=True)
+    work_mode = Column(CHAR(1), primary_key=False, nullable=False)
+    step_id = Column(String, primary_key=False, nullable=False)
+    state = Column(CHAR(3), primary_key=False, nullable=False)
+    state_date = Column(DateTime, primary_key=False, nullable=False)
+    create_date = Column(DateTime, primary_key=False, nullable=False)
+    deal_sys = Column(CHAR(3), primary_key=False, nullable=False)
+    deal_msg = Column(String, primary_key=False, nullable=True)
+    repeat_cnt = Column(BIGINT, primary_key=False, nullable=True)
+    remark = Column(String, primary_key=False, nullable=True)
+    pri = Column(CHAR(3), primary_key=False, nullable=True)
 
 
 class NoticeSend(Base, Table):
@@ -83,7 +83,7 @@ class NoticeSend(Base, Table):
     STATE = Column(CHAR)
     STATE_DATE = Column(DateTime)
     CREATE_DATE = Column(DateTime)
-    FAIL_NUM = Column(BIGINT(5))
+    FAIL_NUM = Column(BIGINT)
     FAIL_REASON = Column(String)
     REMARK = Column(String)
     TEMPLATE_ID = Column(String)
@@ -95,36 +95,21 @@ class NoticeSend(Base, Table):
     def __repr__(self):
         return 'NoticeSend%r[%r]' % (self.REMARK, self.NOTICE_ID)
 
+
 class TaskDispatch(Base, Table):
     __tablename__ = 'or_task_dispatch'
-    NOTICE_ID = Column(String, primary_key=True, nullable=False)
-    ACCEPT_PROVINCE_CODE = Column(String)
-    ACCEPT_EPARCHY_CODE = Column(String)
-    OP_NO = Column(String)
-    OP_TYPE = Column(CHAR(1))
-    PRI = Column(CHAR(3))
-    NOTICE_TYPE = Column(CHAR(3))
-    NOTICE_TOPIC = Column(String)
-    NOTICE_DESC = Column(String)
-    ASSIGN_STAFF_ID = Column(String)
-    ASSIGN_STAFF_NAME = Column(String)
-    ASSIGN_DEPART_ID = Column(String)
-    ASSIGN_DEPART_NAME = Column(String)
-    RECEIVE_STAFF_ID = Column(String)
-    RECEIVE_STAFF_NAME = Column(String)
-    RECEIVE_DEPART_ID = Column(String)
-    RECEIVE_DEPART_NAME = Column(String)
-    STATE = Column(CHAR)
-    STATE_DATE = Column(DateTime)
-    CREATE_DATE = Column(DateTime)
-    FAIL_NUM = Column(BIGINT(5))
-    FAIL_REASON = Column(String)
-    REMARK = Column(String)
-    TEMPLATE_ID = Column(String)
-    CONTACT_NUM = Column(String)
-    SEND_DATE = Column(DateTime)
-    APPLY_NO = Column(String)
-    WORK_ORDER_NO = Column(String)
+    msg_id = Column(String, primary_key=True, nullable=False)
+    msg_create_date = Column(DateTime, primary_key=False, nullable=True)
+    msg_deal_date = Column(DateTime, primary_key=False, nullable=True)
+    msg_deal_flag = Column(CHAR(1), primary_key=False, nullable=True)
+    msg_deal_count = Column(BIGINT, primary_key=False, nullable=True)
+    msg_fail_reason = Column(String, primary_key=False, nullable=True)
+    so_nbr = Column(String, primary_key=False, nullable=True)
+    remarks = Column(String, primary_key=False, nullable=True)
+    province_code = Column(String, primary_key=False, nullable=True)
+    partition_id = Column(BIGINT, primary_key=False, nullable=True)
+    task_type = Column(String, primary_key=False, nullable=True)
+    wf_id = Column(String, primary_key=False, nullable=True)
 
     def __repr__(self):
-        return 'WorkOrderAssign%r[%r]' % (self.REMARK, self.APPLY_NO)
+        return 'TaskDispatch%r[%r]' % (self.remarks, self.msg_id)
