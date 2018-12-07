@@ -15,8 +15,11 @@ LOG_PATH = 'D:\\PycharmProjects\\ForTreesServer\\logs\\'
 # 是否写日志到文件开关
 IS_WRITE_LOG_TO_FILE = False
 IS_REWRITE_FILE = False
+
 class Config():
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://issmadm:issmadm@10.102.255.37:8069/dbissmadm?charset=utf8'
+    # 守护检测等待时间
+    WAIT_TIME = 10
     # 当关闭数据库是否自动提交事务
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     # 是否追踪修改

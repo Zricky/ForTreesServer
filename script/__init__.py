@@ -8,5 +8,6 @@
 # /    >🐍 人生苦短，我用python
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import NullPool
 from log.logger import Logger
 logger=Logger().logger
