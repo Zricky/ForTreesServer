@@ -6,5 +6,10 @@
 #  {\____/}
 # ( • . • )
 # /    >🐍 人生苦短，我用python
-from flask_sqlalchemy import SQLAlchemy
-db=SQLAlchemy()
+from app.app import db
+Model = db.Model
+Column = db.Column
+String = db.String
+CHAR = db.CHAR
+BIGINT = db.BIGINT
+DateTime = db.DateTime

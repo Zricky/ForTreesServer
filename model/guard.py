@@ -11,9 +11,10 @@
 # import os
 
 # db = SQLAlchemy()
-from . import db
+from . import *
 
-class Table():
+
+class Table:
     def to_json(self):
         from datetime import datetime
         dict = self.__dict__
@@ -26,34 +27,89 @@ class Table():
 
 class BatchTask(db.Model, Table):
     __tablename__ = 'tf_b_batch_task'
-    TASK_ORDER_NO = db.Column(db.String, primary_key=True, nullable=False)
-    ORDER_TYPE = db.Column(db.CHAR)
-    TASK_TYPE = db.Column(db.String)
-    ACCEPT_PROVINCE_CODE = db.Column(db.String)
-    ACCEPT_EPARCHY_CODE = db.Column(db.String)
-    ACCEPT_CITY_CODE = db.Column(db.String)
-    CREATE_DATE = db.Column(db.DateTime)
-    FAIL_NUM = db.Column(db.BIGINT)
-    FAIL_RESON = db.Column(db.String)
-    REMARK = db.Column(db.String)
+    TASK_ORDER_NO = Column(String, primary_key=True, nullable=False)
+    ORDER_TYPE = Column(CHAR)
+    TASK_TYPE = Column(String)
+    ACCEPT_PROVINCE_CODE = Column(String)
+    ACCEPT_EPARCHY_CODE = Column(String)
+    ACCEPT_CITY_CODE = Column(String)
+    CREATE_DATE = Column(DateTime)
+    FAIL_NUM = Column(BIGINT)
+    FAIL_RESON = Column(String)
+    REMARK = Column(String)
 
     def __repr__(self):
-        return 'BatchTask%r[%r]' % (self.REMARK,self.TASK_ORDER_NO)
+        return 'BatchTask%r[%r]' % (self.REMARK, self.TASK_ORDER_NO)
 
 
-if __name__ == '__main__':
-    engine = db.create_engine('mysql+pymysql://issmadm:issmadm@10.102.255.37:8069/dbissmadm?charset=utf8')
-    DBSession = db.sessionmaker(bind=engine)
-    dbSession = DBSession()
-    dbSession.query(BatchTask).filter_by(TASK_ORDER_NO="10101010").update({'FAIL_NUM':0})
-    dbSession.commit()
-    batch_task = dbSession.query(BatchTask).filter_by(TASK_ORDER_NO="10101010").one()
-    print(batch_task.to_json())
-    # time.sleep(10)
-    print(dbSession.query(BatchTask.FAIL_NUM).filter_by(TASK_ORDER_NO="10101010").one())
-    if(dbSession.query(BatchTask.FAIL_NUM).filter_by(TASK_ORDER_NO="10101010").one()[0]==0):
-        print('执行脚本')
-        # os.system(u'/iom/script/idaemonshell/idaemon/src/killAssignWoTimer.sh')
-        # os.system(u'/iom/script/idaemonshell/idaemon/src/startAssignWoTimer..sh')
-        os.system('java -version ')
-        os.system('python -V')
+class WorkOrderAssign(db.Model, Table):
+    __tablename__ = 'tf_b_work_order_assign'
+    apply_no = Column(String, primary_key=True, nullable=True)
+    work_order_no = Column(String, primary_key=False, nullable=False)
+    accept_province_code = Column(String, primary_key=False, nullable=False)
+    accept_eparchy_code = Column(String, primary_key=False, nullable=False)
+    accept_city_code = Column(String, primary_key=False, nullable=True)
+    work_mode = Column(CHAR(1), primary_key=False, nullable=False)
+    step_id = Column(String, primary_key=False, nullable=False)
+    state = Column(CHAR(3), primary_key=False, nullable=False)
+    state_date = Column(DateTime, primary_key=False, nullable=False)
+    create_date = Column(DateTime, primary_key=False, nullable=False)
+    deal_sys = Column(CHAR(3), primary_key=False, nullable=False)
+    deal_msg = Column(String, primary_key=False, nullable=True)
+    repeat_cnt = Column(BIGINT, primary_key=False, nullable=True)
+    remark = Column(String, primary_key=False, nullable=True)
+    pri = Column(CHAR(3), primary_key=False, nullable=True)
+
+
+class NoticeSend(db.Model, Table):
+    __tablename__ = 'tf_b_notice'
+    NOTICE_ID = Column(String, primary_key=True, nullable=False)
+    ACCEPT_PROVINCE_CODE = Column(String)
+    ACCEPT_EPARCHY_CODE = Column(String)
+    OP_NO = Column(String)
+    OP_TYPE = Column(CHAR(1))
+    PRI = Column(CHAR(3))
+    NOTICE_TYPE = Column(CHAR(3))
+    NOTICE_TOPIC = Column(String)
+    NOTICE_DESC = Column(String)
+    ASSIGN_STAFF_ID = Column(String)
+    ASSIGN_STAFF_NAME = Column(String)
+    ASSIGN_DEPART_ID = Column(String)
+    ASSIGN_DEPART_NAME = Column(String)
+    RECEIVE_STAFF_ID = Column(String)
+    RECEIVE_STAFF_NAME = Column(String)
+    RECEIVE_DEPART_ID = Column(String)
+    RECEIVE_DEPART_NAME = Column(String)
+    STATE = Column(CHAR)
+    STATE_DATE = Column(DateTime)
+    CREATE_DATE = Column(DateTime)
+    FAIL_NUM = Column(BIGINT)
+    FAIL_REASON = Column(String)
+    REMARK = Column(String)
+    TEMPLATE_ID = Column(String)
+    CONTACT_NUM = Column(String)
+    SEND_DATE = Column(DateTime)
+    APPLY_NO = Column(String)
+    WORK_ORDER_NO = Column(String)
+
+    def __repr__(self):
+        return 'NoticeSend%r[%r]' % (self.REMARK, self.NOTICE_ID)
+
+
+class TaskDispatch(db.Model, Table):
+    __tablename__ = 'or_task_dispatch'
+    msg_id = Column(String, primary_key=True, nullable=False)
+    msg_create_date = Column(DateTime, primary_key=False, nullable=True)
+    msg_deal_date = Column(DateTime, primary_key=False, nullable=True)
+    msg_deal_flag = Column(CHAR(1), primary_key=False, nullable=True)
+    msg_deal_count = Column(BIGINT, primary_key=False, nullable=True)
+    msg_fail_reason = Column(String, primary_key=False, nullable=True)
+    so_nbr = Column(String, primary_key=False, nullable=True)
+    remarks = Column(String, primary_key=False, nullable=True)
+    province_code = Column(String, primary_key=False, nullable=True)
+    partition_id = Column(BIGINT, primary_key=False, nullable=True)
+    task_type = Column(String, primary_key=False, nullable=True)
+    wf_id = Column(String, primary_key=False, nullable=True)
+
+    def __repr__(self):
+        return 'TaskDispatch%r[%r]' % (self.remarks, self.msg_id)

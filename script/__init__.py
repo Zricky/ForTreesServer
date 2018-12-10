@@ -6,6 +6,7 @@
 #  {\____/}
 # ( • . • )
 # /    >🐍 人生苦短，我用python
+from smodel.guard import BatchTask, WorkOrderAssign, NoticeSend, TaskDispatch
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
